@@ -1,0 +1,686 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<link rel="icon" href="img/logo.png">
+<title>KORSUN Music School — индивидуальные уроки музыки онлайн</title>
+<meta name="description" content="Онлайн-школа Михаила Корсуна: мандолина, продакшн в Logic Pro, сведение и мастеринг, композиция, оркестровка, гармония и теория музыки. Индивидуально, по вашему материалу.">
+<meta property="og:title" content="KORSUN Music School">
+<meta property="og:description" content="Индивидуальные уроки музыки онлайн: мандолина, Logic Pro, сведение, композиция, оркестровка, гармония.">
+<meta property="og:image" content="img/studio.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&family=Great+Vibes&display=swap">
+<style>
+/* Concept: the school as a Logic Pro session. Dark charcoal UI, an LCD in the hero,
+   every subject is a coloured track, the playhead runs through the page. */
+:root{
+  --bg:#121214; --win:#1b1b1e; --panel:#222226; --panel-2:#2a2a2f; --line:rgba(255,255,255,.08); --line-2:rgba(255,255,255,.15);
+  --fg:#f2f2f4; --text:#d9d9de; --mu:#a1a1aa; --mu-2:#73737c;
+  --blue:#4c9cff; --cyan:#2fd0de; --green:#4fd06b; --yellow:#ffcf40; --orange:#ff9a3c; --red:#ff5d5d; --pink:#ff63b0; --purple:#a882ff;
+  --acc:var(--yellow); --ink:#151515;
+  --f:"Onest",system-ui,-apple-system,"Segoe UI",sans-serif; --mono:"JetBrains Mono",ui-monospace,Menlo,monospace; --script:"Great Vibes","Snell Roundhand",cursive;
+  --wrap:1180px; --r:12px; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--f);font-size:17px;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:60;background:rgba(18,18,20,.9)}
+a{color:inherit}
+img{max-width:100%;height:auto;display:block}
+.wrap{max-width:var(--wrap);margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+@media (max-width:480px){.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:6px}
+
+/* header = Logic control bar */
+.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:50;background:rgba(27,27,30,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--line)}
+.top .wrap{display:flex;align-items:center;gap:22px;height:62px}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;letter-spacing:.02em;font-size:14px;white-space:nowrap}
+.brand img{height:30px;width:auto}
+.brand span{color:var(--mu);font-weight:600}
+.nav{display:flex;gap:24px;margin-left:auto;font-size:14.5px;font-weight:500}
+.nav a{text-decoration:none;color:var(--mu);transition:color .2s}
+.nav a:hover{color:var(--fg)}
+.seg{display:flex;background:var(--panel);border:1px solid var(--line-2);border-radius:8px;padding:3px;gap:2px}
+.seg button{all:unset;cursor:pointer;font:700 12px var(--mono);letter-spacing:.06em;padding:5px 10px;border-radius:5px;color:var(--mu)}
+.seg button[aria-pressed="true"]{background:var(--panel-2);color:var(--fg);box-shadow:inset 0 0 0 1px var(--line-2)}
+.seg button:focus-visible{outline:2px solid var(--acc)}
+.top .cta-s{display:inline-flex;padding:9px 16px;border-radius:8px;background:var(--acc);color:var(--ink);font-weight:700;font-size:14px;text-decoration:none;white-space:nowrap}
+@media (max-width:980px){.nav{display:none}.top .seg{margin-left:auto}}
+@media (max-width:520px){.top .cta-s{display:none}.brand span{display:none}}
+
+/* hero */
+.hero{position:relative;padding-block:56px 40px;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:0;pointer-events:none;background:
+  radial-gradient(520px 380px at 85% 10%,rgba(76,156,255,.18),transparent 70%),
+  radial-gradient(420px 320px at 100% 85%,rgba(168,130,255,.16),transparent 70%),
+  radial-gradient(420px 300px at 10% 0%,rgba(255,154,60,.10),transparent 70%)}
+.hero .wrap{position:relative;display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+.lcd{display:inline-flex;align-items:stretch;gap:0;background:#0d0f12;border:1px solid var(--line-2);border-radius:10px;font-family:var(--mono);overflow:hidden;box-shadow:inset 0 1px 0 rgba(255,255,255,.04)}
+.lcd div{padding:8px 14px;border-right:1px solid var(--line);display:flex;flex-direction:column;justify-content:center}
+.lcd div:last-child{border-right:0}
+.lcd b{font-size:17px;font-weight:500;color:#cfe3ff;letter-spacing:.04em;line-height:1.2;font-variant-numeric:tabular-nums}
+.lcd small{font-size:9.5px;letter-spacing:.16em;color:var(--mu-2);text-transform:uppercase}
+.lcd .rec{flex-direction:row;align-items:center;gap:8px}
+.lcd .rec i{width:9px;height:9px;border-radius:50%;background:var(--red);box-shadow:0 0 10px var(--red);animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.35}}
+@media (max-width:520px){.lcd .opt{display:none}}
+h1{font-weight:800;font-size:clamp(40px,6.2vw,84px);line-height:1;letter-spacing:-.035em;margin:24px 0 22px;text-wrap:balance}
+h1 em,h2 em{font-family:var(--script);font-style:normal;font-weight:400;font-size:1.25em;line-height:.8;display:inline-block;padding:.12em .14em .18em .12em;margin:-.12em -.04em -.18em -.02em;letter-spacing:0;
+  background:linear-gradient(100deg,var(--yellow) 10%,var(--orange) 55%,var(--pink) 95%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:clamp(17px,1.6vw,20px);color:var(--mu);max-width:34em;margin:0 0 30px}
+.cta{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 22px;border-radius:10px;font-weight:700;font-size:15px;text-decoration:none;border:1px solid transparent;transition:transform .2s,background .2s,border-color .2s;cursor:pointer;font-family:inherit}
+.btn.fill{background:var(--acc);color:var(--ink)}
+.btn.fill:hover{transform:translateY(-1px);background:#ffd95f}
+.btn.line{border-color:var(--line-2);color:var(--fg);background:transparent}
+.btn.line:hover{border-color:var(--blue)}
+.note{font-size:14px;color:var(--mu-2);margin-top:14px}
+
+/* window with photo */
+.win{position:relative;background:var(--win);border:1px solid var(--line-2);border-radius:14px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+.win .bar{display:flex;align-items:center;gap:7px;padding:10px 12px;border-bottom:1px solid var(--line);font:500 11.5px var(--mono);color:var(--mu-2)}
+.win .bar i{width:10px;height:10px;border-radius:50%;background:#ff5f57}.win .bar i+i{background:#febc2e}.win .bar i+i+i{background:#28c840}
+.win .bar span{margin-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.win img{width:100%;aspect-ratio:4/4.4;object-fit:cover;object-position:50% 30%}
+.win .meter{position:absolute;right:12px;bottom:12px;display:flex;gap:3px;align-items:flex-end;height:46px;padding:8px;background:rgba(13,15,18,.75);border-radius:8px;backdrop-filter:blur(6px)}
+.win .meter i{width:5px;border-radius:2px;background:linear-gradient(0deg,var(--green) 0%,var(--green) 60%,var(--yellow) 80%,var(--red) 100%);animation:lv 1.1s ease-in-out infinite alternate}
+.win .meter i:nth-child(2){animation-delay:.2s}.win .meter i:nth-child(3){animation-delay:.45s}.win .meter i:nth-child(4){animation-delay:.1s}
+@keyframes lv{from{height:20%}to{height:100%}}
+@media (prefers-reduced-motion:reduce){.win .meter i,.lcd .rec i,.ph{animation:none!important}}
+@media (max-width:900px){.hero .wrap{grid-template-columns:1fr}.win{max-width:460px}}
+
+/* arrangement strip under hero */
+.arr{grid-column:1/-1;position:relative;margin-top:44px;background:var(--win);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.arr .ruler{display:grid;grid-template-columns:repeat(16,1fr);height:22px;border-bottom:1px solid var(--line);font:500 10px var(--mono);color:var(--mu-2)}
+.arr .ruler span{border-left:1px solid var(--line);padding-left:4px;line-height:22px}
+.lane{position:relative;height:30px;border-bottom:1px solid var(--line)}
+.lane:last-child{border-bottom:0}
+.rg{position:absolute;top:4px;bottom:4px;border-radius:5px;background:color-mix(in srgb,var(--c) 30%,transparent);border:1px solid color-mix(in srgb,var(--c) 75%,transparent);font:600 10.5px var(--mono);color:var(--c);padding:0 7px;line-height:20px;white-space:nowrap;overflow:hidden}
+.ph{position:absolute;top:0;bottom:0;width:2px;background:#fff;box-shadow:0 0 12px rgba(255,255,255,.7);left:0;animation:play 16s linear infinite}
+@keyframes play{from{left:0}to{left:100%}}
+
+/* sections */
+section{padding-block:88px;position:relative}
+.eb{font:700 12px var(--mono);letter-spacing:.18em;text-transform:uppercase;color:var(--c,var(--acc));display:inline-flex;align-items:center;gap:10px}
+.eb::before{content:"";width:18px;height:3px;border-radius:2px;background:currentColor}
+h2{font-weight:800;font-size:clamp(32px,4.4vw,54px);line-height:1.05;letter-spacing:-.03em;margin:12px 0 0;text-wrap:balance}
+h3{font-size:20px;font-weight:700;letter-spacing:-.01em;margin:0 0 8px;line-height:1.25}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.sec-head p{max-width:32em;color:var(--mu);margin:0}
+.divider{height:1px;background:var(--line)}
+
+/* for whom */
+.who{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px;position:relative;overflow:hidden}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--c,var(--blue))}
+.card p{margin:0;color:var(--mu);font-size:15.5px}
+@media (max-width:860px){.who{grid-template-columns:1fr}}
+
+/* tracks (subjects) */
+.mixer{background:var(--win);border:1px solid var(--line-2);border-radius:14px;overflow:hidden}
+.mixer .hd{display:flex;justify-content:space-between;padding:10px 16px;border-bottom:1px solid var(--line);font:500 11.5px var(--mono);color:var(--mu-2);letter-spacing:.06em}
+.trk{border-bottom:1px solid var(--line)}
+.trk:last-child{border-bottom:0}
+.trk>button{all:unset;cursor:pointer;display:grid;grid-template-columns:44px 1fr auto;gap:16px;align-items:center;width:100%;padding:16px 16px;box-sizing:border-box}
+.trk>button:focus-visible{outline:2px solid var(--c);outline-offset:-2px}
+.trk .num{font:700 12px var(--mono);color:var(--ink);background:var(--c);border-radius:6px;height:30px;display:grid;place-items:center}
+.trk .nm{font-weight:700;font-size:clamp(17px,1.8vw,20px);line-height:1.3}
+.trk .nm small{display:block;font-weight:500;font-size:14px;color:var(--mu);margin-top:2px}
+.trk .ms{display:flex;gap:6px;align-items:center}
+.trk .ms i{font:700 10px var(--mono);font-style:normal;width:22px;height:20px;border-radius:4px;display:grid;place-items:center;background:var(--panel-2);color:var(--mu-2)}
+.trk .ms .pl{width:26px;height:26px;border-radius:50%;background:transparent;border:1px solid var(--line-2);color:var(--fg);font-size:14px;transition:transform .25s}
+.trk.open .ms .pl{transform:rotate(45deg);border-color:var(--c);color:var(--c)}
+.trk .bd{display:none;padding:0 16px 22px 76px}
+.trk.open .bd{display:block}
+.trk.open{background:linear-gradient(90deg,color-mix(in srgb,var(--c) 9%,transparent),transparent 60%)}
+.bd .q{font-weight:700;font-size:18px;margin:0 0 10px;color:var(--fg)}
+.bd p{margin:0 0 12px;color:var(--text);max-width:46em}
+.bd ul{margin:6px 0 16px;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:6px 24px;max-width:52em}
+.bd li{position:relative;padding-left:18px;color:var(--text);font-size:15.5px}
+.bd li::before{content:"";position:absolute;left:0;top:.62em;width:8px;height:8px;border-radius:2px;background:var(--c)}
+.bd .lk{font-weight:700;color:var(--c);text-decoration:none;font-size:15px}
+.bd .lk:hover{text-decoration:underline}
+.bd .ph2{float:right;width:min(320px,40%);margin:0 0 14px 22px;border-radius:10px;border:1px solid var(--line)}
+@media (max-width:700px){.trk .bd{padding:0 16px 20px}.bd ul{grid-template-columns:1fr}.bd .ph2{float:none;width:100%;margin:0 0 14px}.trk>button{grid-template-columns:36px 1fr auto;gap:12px}.trk .ms i:not(.pl){display:none}}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:24px}
+.step .k{font:700 12px var(--mono);letter-spacing:.12em;color:var(--c)}
+.step p{margin:0;color:var(--mu);font-size:15.5px}
+@media (max-width:860px){.steps{grid-template-columns:1fr}}
+
+/* pricing */
+.cur{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:22px}
+.cur p{margin:0;color:var(--mu);font-size:14.5px}
+.plans{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.plan{position:relative;background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:24px 22px;display:flex;flex-direction:column}
+.plan .top-b{position:absolute;left:0;right:0;top:0;height:4px;background:var(--c)}
+.plan .k{font:700 11px var(--mono);letter-spacing:.14em;color:var(--c);text-transform:uppercase}
+.plan h3{margin:8px 0 2px;font-size:22px}
+.plan .sub{color:var(--mu-2);font-size:13.5px}
+.price{margin:18px 0 4px;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.price b{font-size:38px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.price s{color:var(--mu-2);font-size:16px}
+.per{color:var(--mu);font-size:14px;min-height:1.6em}
+.plan ul{list-style:none;margin:18px 0 22px;padding:0;display:flex;flex-direction:column;gap:8px}
+.plan li{position:relative;padding-left:20px;font-size:15px;color:var(--text)}
+.plan li::before{content:"";position:absolute;left:0;top:.55em;width:10px;height:6px;border-left:2px solid var(--c);border-bottom:2px solid var(--c);transform:rotate(-45deg)}
+.plan .btn{margin-top:auto;justify-content:center}
+.plan.pop{border-color:color-mix(in srgb,var(--c) 60%,transparent);background:linear-gradient(180deg,color-mix(in srgb,var(--c) 8%,var(--panel)),var(--panel) 40%)}
+.badge{position:absolute;top:14px;right:14px;font:700 10px var(--mono);letter-spacing:.1em;padding:4px 8px;border-radius:5px;background:var(--c);color:var(--ink)}
+.pay{margin-top:22px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;color:var(--mu);font-size:14.5px}
+.pay span{font:600 12px var(--mono);padding:6px 10px;border-radius:6px;border:1px solid var(--line-2);color:var(--text)}
+@media (max-width:1060px){.plans{grid-template-columns:1fr 1fr}}
+@media (max-width:620px){.plans{grid-template-columns:1fr}}
+
+/* reviews */
+.revs{columns:3;column-gap:16px}
+.rev{break-inside:avoid;background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:22px;margin:0 0 16px;position:relative}
+.rev .who2{display:flex;align-items:center;gap:12px;margin-bottom:12px}
+.rev .av{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-weight:700;color:var(--ink);background:var(--c);flex:none}
+.rev .who2 b{display:block;font-size:15.5px;line-height:1.2}
+.rev .who2 small{color:var(--mu-2);font-size:12.5px;font-family:var(--mono)}
+.rev p{margin:0 0 8px;color:var(--text);font-size:15.5px}
+.rev p:last-child{margin-bottom:0}
+.stars{color:var(--yellow);letter-spacing:2px;font-size:13px;margin-left:auto}
+@media (max-width:980px){.revs{columns:2}}
+@media (max-width:640px){.revs{columns:1}}
+
+/* about */
+.about{display:grid;grid-template-columns:.85fr 1.15fr;gap:48px;align-items:center}
+.about .pic{border-radius:14px;overflow:hidden;border:1px solid var(--line-2);aspect-ratio:4/5}
+.about .pic img{width:100%;height:100%;object-fit:cover;object-position:62% 35%}
+.about p{color:var(--text);margin:0 0 14px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:26px}
+.stat{border-top:1px solid var(--line-2);padding-top:14px;position:relative}
+.stat::before{content:"";position:absolute;left:0;top:-1px;width:30px;height:2px;background:var(--c)}
+.stat b{display:block;font-size:30px;font-weight:600;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.stat span{color:var(--mu);font-size:13.5px;line-height:1.35;display:block}
+.gal{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:22px}
+.gal img{border-radius:10px;border:1px solid var(--line);aspect-ratio:3/2;object-fit:cover;width:100%}
+@media (max-width:900px){.about{grid-template-columns:1fr}.about .pic{max-width:420px}.stats{grid-template-columns:repeat(2,1fr)}}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+form{background:var(--win);border:1px solid var(--line-2);border-radius:14px;padding:24px;display:flex;flex-direction:column;gap:14px}
+label{display:flex;flex-direction:column;gap:6px;font:600 11.5px var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--mu)}
+input,select,textarea{font:400 16px var(--f);color:var(--fg);background:var(--panel);border:1px solid var(--line-2);border-radius:8px;padding:12px 14px;width:100%;letter-spacing:0;text-transform:none}
+textarea{min-height:110px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--yellow)}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.direct{display:flex;flex-direction:column;gap:10px;margin-top:26px}
+.direct a{display:flex;align-items:center;gap:14px;padding:14px 16px;border-radius:10px;background:var(--panel);border:1px solid var(--line);text-decoration:none;transition:border-color .2s}
+.direct a:hover{border-color:var(--c)}
+.direct i{width:34px;height:34px;border-radius:8px;display:grid;place-items:center;background:var(--c);color:var(--ink);font-style:normal;flex:none}
+.direct i svg{width:18px;height:18px}
+.direct b{display:block;font-size:15.5px}
+.direct small{color:var(--mu);font-size:13.5px}
+.ok{display:none;padding:14px 16px;border-radius:10px;background:color-mix(in srgb,var(--green) 14%,transparent);border:1px solid color-mix(in srgb,var(--green) 50%,transparent);color:var(--fg);font-size:15px}
+@media (max-width:900px){.contact{grid-template-columns:1fr}}
+
+footer{border-top:1px solid var(--line);padding-block:44px;text-align:center;color:var(--mu-2);font-size:14px}
+footer .brand{justify-content:center;margin-bottom:14px}
+footer q{display:block;font-family:var(--script);font-size:30px;color:var(--mu);margin:0 0 16px;quotes:none}
+footer nav{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:12px}
+footer nav a{color:var(--mu);text-decoration:none}
+footer nav a:hover{color:var(--fg)}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="KORSUN Music School"><img src="img/logo.png" alt="KORSUN"><span>Music School</span></a>
+    <nav class="nav">
+      <a href="#subjects" data-i="n1">Направления</a>
+      <a href="#prices" data-i="n2">Цены</a>
+      <a href="#reviews" data-i="n3">Отзывы</a>
+      <a href="#about" data-i="n4">Обо мне</a>
+    </nav>
+    <div class="seg" role="group" aria-label="Language"><button id="l-ru" aria-pressed="true">RU</button><button id="l-en" aria-pressed="false">EN</button></div>
+    <a class="cta-s" href="#contact" data-i="n5">Записаться</a>
+  </div>
+</header>
+
+<main id="top">
+<section class="hero">
+  <div class="wrap">
+    <div>
+      <div class="lcd" aria-hidden="true">
+        <div class="rec"><i></i><b>REC</b></div>
+        <div><small>Bar</small><b id="bar">001 . 1</b></div>
+        <div class="opt"><small>Tempo</small><b>120</b></div>
+        <div class="opt"><small>Key</small><b>C min</b></div>
+        <div><small>Online</small><b>1 : 1</b></div>
+      </div>
+      <h1 data-ih="h1">Музыка, которая <em>звучит</em> профессионально</h1>
+      <p class="lede" data-i="lede">Индивидуальные онлайн-уроки: мандолина, продакшн в Logic Pro, сведение и мастеринг, композиция, оркестровка и гармония. Работаем с вашим материалом с первого занятия.</p>
+      <div class="cta">
+        <a class="btn fill" href="#contact" data-i="cta1">Записаться на консультацию</a>
+        <a class="btn line" href="#subjects" data-i="cta2">Направления</a>
+      </div>
+      <p class="note" data-i="note">Бесплатная консультация 20–30 минут: разберём вашу ситуацию и составим личный план.</p>
+    </div>
+    <figure class="win" style="margin:0">
+      <div class="bar"><i></i><i></i><i></i><span>Lesson — Session 01.logicx</span></div>
+      <img src="img/studio.jpg" alt="Михаил Корсун за работой в студии" data-alt="alt1" width="960" height="1280">
+      <div class="meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+    </figure>
+  </div>
+  <div class="wrap">
+    <div class="arr" aria-hidden="true">
+      <div class="ruler"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span><span>7</span><span>8</span><span>9</span><span>10</span><span>11</span><span>12</span><span>13</span><span>14</span><span>15</span><span>16</span></div>
+      <div class="lane"><div class="rg" style="--c:var(--orange);left:0;width:24%">Mandolin</div><div class="rg" style="--c:var(--orange);left:38%;width:30%">Mandolin</div></div>
+      <div class="lane"><div class="rg" style="--c:var(--blue);left:6%;width:46%">Strings</div><div class="rg" style="--c:var(--blue);left:56%;width:40%">Strings</div></div>
+      <div class="lane"><div class="rg" style="--c:var(--purple);left:12%;width:20%">Piano</div><div class="rg" style="--c:var(--purple);left:44%;width:52%">Piano</div></div>
+      <div class="lane"><div class="rg" style="--c:var(--green);left:25%;width:71%">Drums</div></div>
+      <div class="ph"></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="who">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eb" style="--c:var(--blue)" data-i="w_eb">Для кого</span><h2 data-i="w_h">Эти уроки для вас, если</h2></div></div>
+    <div class="who">
+      <div class="card" style="--c:var(--orange)"><h3 data-i="w1h">Вы играете или хотите играть на мандолине</h3><p data-i="w1">С нуля или переходите с домры, скрипки, гитары. Постановка, техника, репертуар от барокко до современной музыки.</p></div>
+      <div class="card" style="--c:var(--blue)"><h3 data-i="w2h">Вы пишете музыку в DAW</h3><p data-i="w2">Работаете в Logic Pro или другой программе и слышите, что что-то не так, но не понимаете почему.</p></div>
+      <div class="card" style="--c:var(--purple)"><h3 data-i="w3h">Вы хотите писать для кино и медиа</h3><p data-i="w3">Кино, игры, реклама, трейлеры: оркестровка, драматургия и стандарты качества индустрии.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="subjects">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eb" style="--c:var(--yellow)" data-i="s_eb">Направления</span><h2 data-ih="s_h">Чему я <em>учу</em></h2></div><p data-i="s_p">Каждое направление можно брать отдельно или собрать в личную программу. Нажмите на дорожку, чтобы открыть подробности.</p></div>
+    <div class="mixer">
+      <div class="hd"><span>TRACKS · 9</span><span>KORSUN MUSIC SCHOOL</span></div>
+
+      <div class="trk open" style="--c:var(--orange)"><button aria-expanded="true"><span class="num">01</span><span class="nm"><span data-i="t1">Мандолина</span><small data-i="t1s">Новичкам и тем, кто переходит с домры, скрипки, гитары</small></span><span class="ms"><i>M</i><i>S</i><i class="pl">+</i></span></button>
+        <div class="bd"><img class="ph2" src="img/mandolin.jpg" alt="Михаил Корсун играет на мандолине" data-alt="alt2" loading="lazy" width="1400" height="933">
+          <p class="q" data-i="t1q">Мандолина — мой голос. Покажу, на что она способна</p>
+          <p data-i="t1p1">Больше двадцати лет я играю на мандолине и домре: учился в классе народных инструментов, был солистом оркестров и выпустил альбом, записанный целиком на мандолине. Мандолина звучит в академической музыке, в современных жанрах, в кино и рекламе, и я хочу, чтобы она звучала у вас.</p>
+          <p data-i="t1p2">На занятиях:</p>
+          <ul><li data-i="t1a">Посадка, постановка правой руки и медиатора</li><li data-i="t1b">Тремоло, техника и чистая интонация</li><li data-i="t1c">Переход с домры, скрипки или гитары</li><li data-i="t1d">Репертуар: барокко, классика, концерты Вивальди</li><li data-i="t1e">Подготовка к конкурсам и поступлению</li><li data-i="t1f">Ансамблевая игра и запись своих партий</li></ul>
+          <a class="lk" href="#contact" data-c="Мандолина" data-i="go">Записаться на урок по этой теме →</a>
+        </div></div>
+
+      <div class="trk" style="--c:var(--blue)"><button aria-expanded="false"><span class="num">02</span><span class="nm"><span data-i="t2">Саунд-продакшн в Logic Pro</span><small data-i="t2s">Или в любой другой DAW: от идеи до готового трека</small></span><span class="ms"><i>M</i><i>S</i><i class="pl">+</i></span></button>
+        <div class="bd">
+          <p class="q" data-i="t2q">От первой идеи до трека, который не стыдно отправить</p>
+          <p data-i="t2p1">Logic Pro — мой основной рабочий инструмент: в нём я пишу трейлерную музыку, саундтреки и альбомы. Научу работать в нём быстро и осознанно, а если вы работаете в другой программе, разберём ту же логику в вашей DAW.</p>
+          <p data-i="t2p2">На занятиях:</p>
+          <ul><li data-i="t2a">Интерфейс, шаблоны и быстрые клавиши</li><li data-i="t2b">MIDI, виртуальные инструменты и библиотеки</li><li data-i="t2c">Аранжировка и структура трека</li><li data-i="t2d">Запись живых инструментов и вокала</li><li data-i="t2e">Саунд-дизайн и работа с сэмплами</li><li data-i="t2f">Свои пресеты и шаблоны под вашу задачу</li></ul>
+          <a class="lk" href="#contact" data-c="Logic Pro" data-i="go">Записаться на урок по этой теме →</a>
+        </div></div>
+
+      <div class="trk" style="--c:var(--cyan)"><button aria-expanded="false"><span class="num">03</span><span class="nm"><span data-i="t3">Сведение и мастеринг</span><small data-i="t3s">Почему трек звучит мутно и как это исправить</small></span><span class="ms"><i>M</i><i>S</i><i class="pl">+</i></span></button>
+        <div class="bd">
+          <p class="q" data-i="t3q">Почему трек звучит мутно — и это не проблема умений</p>
+          <p data-i="t3p1">Большинство проблем в миксе — это не вопрос вкуса, это физика. Громкий звук в одной частотной зоне прячет тихие звуки в той же зоне. Это называется маскировкой, и именно из-за неё треки звучат мутно и плоско.</p>
+          <p data-i="t3p2">На занятиях:</p>
+          <ul><li data-i="t3a">Физика звука за каждым решением</li><li data-i="t3b">EQ как инструмент расчистки, а не украшения</li><li data-i="t3c">Компрессия: что она делает на самом деле</li><li data-i="t3d">Психоакустика: тихий и громкий микс</li><li data-i="t3e">Пространство и глубина</li><li data-i="t3f">Сведение оркестровой музыки и мастеринг</li></ul>
+          <a class="lk" href="#contact" data-c="Сведение и мастеринг" data-i="go">Записаться на урок по этой теме →</a>
+        </div></div>
+
+      <div class="trk" style="--c:var(--purple)"><button aria-expanded="false"><span class="num">04</span><span class="nm"><span data-i="t4">Композиция и мелодика</span><small data-i="t4s">Темы, которые запоминаются</small></span><span class="ms"><i>M</i><i>S</i><i class="pl">+</i></span></button>
+        <div class="bd">
+          <p class="q" data-i="t4q">Почему одни мелодии остаются навсегда, а другие забываются сразу</p>
+          <p data-i="t4p1">Многие думают, что мелодия — это вдохновение. На самом деле это система. Мозг запоминает не красоту, а отклонение от ожидания: один неожиданный звук в нужном месте делает тему незабываемой.</p>
+          <p data-i="t4p2">На занятиях:</p>
+          <ul><li data-i="t4a">Как строится мелодический контур</li><li data-i="t4b">Где ставить кульминацию и почему</li><li data-i="t4c">Как один звук меняет ощущение темы</li><li data-i="t4d">Темы для кино и медиа</li><li data-i="t4e">Музыкальная память слушателя</li><li data-i="t4f">Разбор вашего материала</li></ul>
+          <a class="lk" href="#contact" data-c="Композиция" data-i="go">Записаться на урок по этой теме →</a>
+        </div></div>
+
+      <div class="trk" style="--c:var(--pink)"><button aria-expanded="false"><span class="num">05</span><span class="nm"><span data-i="t5">Оркестровка и аранжировка</span><small data-i="t5s">Живой оркестр в DAW, кино и трейлеры</small></span><span class="ms"><i>M</i><i>S</i><i class="pl">+</i></span></button>
+        <div class="bd">
+          <p class="q" data-i="t5q">Почему одни оркестровые треки звучат живо, а другие плоско</p>
+          <p data-i="t5p1">Оркестровка — это не подбор инструментов. Это решение о том, кто говорит и кто молчит в каждом такте. Тембр несёт смысл: низкие струнные — неизбежность, гобой — одиночество, медные — сила, которую нельзя остановить.</p>
+          <p data-i="t5p2">На занятиях:</p>
+          <ul><li data-i="t5a">Функции четырёх групп оркестра</li><li data-i="t5b">Напряжение без громкости</li><li data-i="t5c">Почему оркестр звучит плоско и как это исправить</li><li data-i="t5d">Живые инструменты и электроника</li><li data-i="t5e">Струнные, медные и деревянные в Logic</li><li data-i="t5f">Трейлерная музыка: стандарты индустрии</li></ul>
+          <a class="lk" href="#contact" data-c="Оркестровка" data-i="go">Записаться на урок по этой теме →</a>
+        </div></div>
+
+      <div class="trk" style="--c:var(--green)"><button aria-expanded="false"><span class="num">06</span><span class="nm"><span data-i="t6">Гармония</span><small data-i="t6s">Как перестать угадывать аккорды</small></span><span class="ms"><i>M</i><i>S</i><i class="pl">+</i></span></button>
+        <div class="bd">
+          <p class="q" data-i="t6q">Почему одни аккорды работают — и как перестать угадывать</p>
+          <p data-i="t6p1">Гармония — это не набор правил, а описание того, как слух воспринимает движение. T → S → D → T: дом, уход, напряжение и возврат. Каждый раз, когда фраза заканчивается ощущением «вот теперь точно домой», работает доминанта.</p>
+          <p data-i="t6p2">На занятиях:</p>
+          <ul><li data-i="t6a">Функциональная логика аккордов</li><li data-i="t6b">Почему одни прогрессии работают, а другие нет</li><li data-i="t6c">Модальный обмен и заимствование</li><li data-i="t6d">Отклонения и модуляции</li><li data-i="t6e">Как гармония создаёт эмоцию</li><li data-i="t6f">Гармонизация ваших мелодий</li></ul>
+          <a class="lk" href="#contact" data-c="Гармония" data-i="go">Записаться на урок по этой теме →</a>
+        </div></div>
+
+      <div class="trk" style="--c:var(--yellow)"><button aria-expanded="false"><span class="num">07</span><span class="nm"><span data-i="t7">Теория музыки и сольфеджио</span><small data-i="t7s">Теория, которую можно применить сразу</small></span><span class="ms"><i>M</i><i>S</i><i class="pl">+</i></span></button>
+        <div class="bd">
+          <p class="q" data-i="t7q">Теория, которую можно применить сразу, а не через год</p>
+          <p data-i="t7p1">Теория музыки — это не скучный предмет для экзаменов, а карта того, что происходит, когда вы работаете со звуком. Двигаете ноту в пианоролле — работаете с одним из четырёх свойств звука. Меняете EQ — меняете тембр через физику обертонов.</p>
+          <p data-i="t7p2">На занятиях:</p>
+          <ul><li data-i="t7a">Теория через пианоролл и DAW</li><li data-i="t7b">Интервалы и их физическая природа</li><li data-i="t7c">Лад и тональность как система тяготений</li><li data-i="t7d">Ритм, метр и темп</li><li data-i="t7e">Слух и сольфеджио</li><li data-i="t7f">Психоакустика: как мозг слышит звук</li></ul>
+          <a class="lk" href="#contact" data-c="Теория музыки" data-i="go">Записаться на урок по этой теме →</a>
+        </div></div>
+
+      <div class="trk" style="--c:var(--red)"><button aria-expanded="false"><span class="num">08</span><span class="nm"><span data-i="t8">Подготовка к поступлению и экзаменам</span><small data-i="t8s">Музыкальные вузы, колледжи, звукорежиссура</small></span><span class="ms"><i>M</i><i>S</i><i class="pl">+</i></span></button>
+        <div class="bd">
+          <p class="q" data-i="t8q">Спокойно и по плану к экзамену</p>
+          <p data-i="t8p1">Готовлю к поступлению на исполнительские специальности, композицию и звукорежиссуру: от программы на инструменте до слухового анализа фонограмм и творческого проекта.</p>
+          <p data-i="t8p2">На занятиях:</p>
+          <ul><li data-i="t8a">Программа и репертуар для поступления</li><li data-i="t8b">Теория, гармония и сольфеджио к экзамену</li><li data-i="t8c">Слуховой анализ фонограмм</li><li data-i="t8d">Сведение и творческий проект</li><li data-i="t8e">Экспресс-подготовка перед экзаменом</li><li data-i="t8f">Конкурсы и прослушивания</li></ul>
+          <a class="lk" href="#contact" data-c="Подготовка к поступлению" data-i="go">Записаться на урок по этой теме →</a>
+        </div></div>
+
+      <div class="trk" style="--c:#8e8e98"><button aria-expanded="false"><span class="num">09</span><span class="nm"><span data-i="t9">Менеджмент музыканта</span><small data-i="t9s">Как сделать из музыки профессию</small></span><span class="ms"><i>M</i><i>S</i><i class="pl">+</i></span></button>
+        <div class="bd">
+          <p class="q" data-i="t9q">Как строить профессию, а не просто заниматься музыкой</p>
+          <p data-i="t9p1">Многие музыканты умеют писать музыку, но не умеют превратить это в профессию. Разница между «я занимаюсь музыкой» и «у меня есть музыкальная профессия» — не в таланте, а в системе.</p>
+          <p data-i="t9p2">На занятиях:</p>
+          <ul><li data-i="t9a">Позиционирование профессионала</li><li data-i="t9b">Ученики и клиенты через контент</li><li data-i="t9c">Доход из нескольких источников</li><li data-i="t9d">Работа с музыкальными библиотеками и лейблами</li><li data-i="t9e">Архив материалов, который работает на вас</li><li data-i="t9f">Как не выгорать и держать темп</li></ul>
+          <a class="lk" href="#contact" data-c="Менеджмент музыканта" data-i="go">Записаться на урок по этой теме →</a>
+        </div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="how">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eb" style="--c:var(--green)" data-i="h_eb">Как начать</span><h2 data-i="h_h">Первая встреча</h2></div></div>
+    <div class="steps">
+      <div class="step" style="--c:var(--orange)"><div class="k" data-i="st1k">ШАГ 1</div><h3 data-i="st1h">Вы пишете мне</h3><p data-i="st1">Коротко о себе и своей задаче. Отвечаю в тот же день.</p></div>
+      <div class="step" style="--c:var(--blue)"><div class="k" data-i="st2k">ШАГ 2</div><h3 data-i="st2h">Бесплатная консультация</h3><p data-i="st2">20–30 минут: разбираем, где вы сейчас, слушаем ваш материал или игру и определяем, куда двигаться.</p></div>
+      <div class="step" style="--c:var(--green)"><div class="k" data-i="st3k">ШАГ 3</div><h3 data-i="st3h">Личный план</h3><p data-i="st3">Если хотите продолжить, предлагаю формат и программу под вашу цель. Без давления.</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="prices">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eb" style="--c:var(--orange)" data-i="p_eb">Форматы и цены</span><h2 data-i="p_h">Онлайн, индивидуально, по вашему материалу</h2></div></div>
+    <div class="cur">
+      <div class="seg" role="group" aria-label="Currency" id="cur"><button data-c="usd" aria-pressed="true">$ USD</button><button data-c="eur" aria-pressed="false">€ EUR</button><button data-c="uah" aria-pressed="false">₴ UAH</button><button data-c="rub" aria-pressed="false">₽ RUB</button></div>
+      <p data-i="p_note">Занятие длится 60 минут. Работаю с учениками из любой точки мира.</p>
+    </div>
+    <div class="plans">
+      <div class="plan" style="--c:var(--blue)"><div class="top-b"></div><div class="k" data-i="pl1k">Старт</div><h3 data-i="pl1h">Разовое занятие</h3><div class="sub" data-i="pl1s">60 минут</div>
+        <div class="price"><b data-p="single"></b></div><div class="per" data-i="pl1per">Попробовать формат или решить одну задачу</div>
+        <ul><li data-i="pl1a">Разбор вашей задачи</li><li data-i="pl1b">Работа с вашим материалом</li><li data-i="pl1c">Конкретный план после урока</li><li data-i="pl1d">Запись занятия</li></ul>
+        <a class="btn line" href="#contact" data-plan="Разовое занятие" data-i="pl_btn1">Записаться</a></div>
+      <div class="plan pop" style="--c:var(--yellow)"><div class="top-b"></div><span class="badge" data-i="pop">ПОПУЛЯРНЫЙ</span><div class="k" data-i="pl2k">Продвинутый</div><h3 data-i="pl2h">Пакет 4 занятия</h3><div class="sub" data-i="pl2s">1–2 раза в неделю</div>
+        <div class="price"><b data-p="p4"></b><s data-p="p4o"></s></div><div class="per" data-p="p4per"></div>
+        <ul><li data-i="pl2a">Всё из «Старта»</li><li data-i="pl2b">Домашние задания и их разбор</li><li data-i="pl2c">Доступ к базе знаний школы</li><li data-i="pl2d">Обратная связь между уроками</li></ul>
+        <a class="btn fill" href="#contact" data-plan="Пакет 4 занятия" data-i="pl_btn2">Выбрать пакет</a></div>
+      <div class="plan" style="--c:var(--orange)"><div class="top-b"></div><div class="k" data-i="pl3k">Элит</div><h3 data-i="pl3h">Пакет 8 занятий</h3><div class="sub" data-i="pl3s">2 раза в неделю, месяц</div>
+        <div class="price"><b data-p="p8"></b><s data-p="p8o"></s></div><div class="per" data-p="p8per"></div>
+        <ul><li data-i="pl3a">Всё из «Продвинутого»</li><li data-i="pl3b">Сопровождение вашего проекта</li><li data-i="pl3c">Связь в мессенджере</li><li data-i="pl3d">Приоритет в расписании</li><li data-i="pl3e">Книга «Теория музыки» в подарок</li></ul>
+        <a class="btn line" href="#contact" data-plan="Пакет 8 занятий" data-i="pl_btn3">Выбрать пакет</a></div>
+      <div class="plan" style="--c:var(--purple)"><div class="top-b"></div><div class="k" data-i="pl4k">Менторство</div><h3 data-i="pl4h">Полное сопровождение</h3><div class="sub" data-i="pl4s">Месяц</div>
+        <div class="price"><b data-p="mentor"></b></div><div class="per" data-i="pl4per">в месяц</div>
+        <ul><li data-i="pl4a">До 10 занятий в месяц</li><li data-i="pl4b">Работа над вашим проектом или программой</li><li data-i="pl4c">Ежедневная обратная связь</li><li data-i="pl4d">Все материалы школы</li><li data-i="pl4e">Книга «Теория музыки» в подарок</li></ul>
+        <a class="btn line" href="#contact" data-plan="Менторство" data-i="pl_btn4">Обсудить формат</a></div>
+    </div>
+    <div class="pay"><b data-i="pay">Оплата:</b><span>Visa / Mastercard</span><span>PayPal</span><span>Wise</span><span>SEPA</span><span data-i="pay2">Карта UA</span><span data-i="pay3">Карта RU / СБП</span><span data-i="pay4">Другой способ — напишите</span></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="reviews">
+  <div class="wrap">
+    <div class="sec-head"><div><span class="eb" style="--c:var(--pink)" data-i="r_eb">Отзывы</span><h2 data-i="r_h">Что говорят ученики</h2></div><p data-i="r_p">Отзывы с площадки, где я преподаю. Рейтинг 5,0.</p></div>
+    <div class="revs">
+      <div class="rev" style="--c:var(--purple)"><div class="who2"><span class="av">Э</span><div><b data-i="rv1n">Элина</b><small data-i="rv1s">Продакшн в Logic Pro</small></div><span class="stars">★★★★★</span></div>
+        <p data-i="rv1a">Михаил — профессионал с большой буквы. Я занимаюсь аранжировкой в Logic Pro, не имея опыта и музыкального образования. Михаил объясняет всё очень спокойно, с огромным интересом, мотивацией и поддержкой. Складывается ощущение, что для него ваш результат так же важен, как и вам самим.</p>
+        <p data-i="rv1b">Уроки полностью подстраиваются под вас. Огромное спасибо, для меня он огромный мотиватор на этом нелёгком пути.</p></div>
+      <div class="rev" style="--c:var(--red)"><div class="who2"><span class="av">В</span><div><b data-i="rv2n">Валерий</b><small data-i="rv2s">Подготовка к поступлению</small></div><span class="stars">★★★★★</span></div>
+        <p data-i="rv2a">Сын поступает в вуз на звукорежиссуру, требовалась предэкзаменационная экспресс-подготовка по слуховому анализу фонограмм, по микшированию звука и консультации по творческому проекту. Очень понравилась работа Михаила, его рекомендации и умение профессионально донести нужный материал до ученика. Спасибо!</p></div>
+      <div class="rev" style="--c:var(--blue)"><div class="who2"><span class="av">Т</span><div><b data-i="rv3n">Татьяна</b><small data-i="rv3s">Logic Pro</small></div><span class="stars">★★★★★</span></div>
+        <p data-i="rv3a">Стояла задача научиться работать в Logic Pro, чтобы самостоятельно обрабатывать практики медитации. Всего за две встречи Михаил рассказал про нужные инструменты программы и настроил пресеты, которыми я теперь пользуюсь сама. После каждой встречи присылал записи, к ним удобно возвращаться.</p></div>
+      <div class="rev" style="--c:var(--cyan)"><div class="who2"><span class="av">И</span><div><b data-i="rv4n">Ирина</b><small data-i="rv4s">Саунд-дизайн</small></div><span class="stars">★★★★★</span></div>
+        <p data-i="rv4a">Брали пару консультаций по саунд-дизайну, всем довольны. За пару занятий удалось выстроить понятную картину, с чего начинать и куда двигаться дальше. Всё вовремя, никаких переносов и накладок. Рекомендую!</p></div>
+      <div class="rev" style="--c:var(--pink)"><div class="who2"><span class="av">М</span><div><b data-i="rv5n">Милана</b><small data-i="rv5s">Аранжировка</small></div><span class="stars">★★★★★</span></div>
+        <p data-i="rv5a">Михаил отличный профессионал и тонкий музыкант. У меня было сложное задание, и я благодарна за проведённую работу. Теперь я как композитор, похоже, нашла своего аранжировщика.</p></div>
+      <div class="rev" style="--c:var(--cyan)"><div class="who2"><span class="av">Д</span><div><b data-i="rv6n">Дмитрий</b><small data-i="rv6s">Сведение</small></div><span class="stars">★★★★★</span></div>
+        <p data-i="rv6a">Очень понравилось разбирать проекты и получать ответы на свои вопросы. Готов продолжать обучение дальше.</p></div>
+      <div class="rev" style="--c:var(--blue)"><div class="who2"><span class="av">А</span><div><b data-i="rv7n">Александр</b><small data-i="rv7s">Logic Pro и сведение</small></div><span class="stars">★★★★★</span></div>
+        <p data-i="rv7a">Обучаемся, всё отлично! Прошли уже 5–7 занятий и продолжаем. Рекомендую, если нужно поднять навыки сведения. Профессионал своего дела!</p></div>
+      <div class="rev" style="--c:var(--green)"><div class="who2"><span class="av">Д</span><div><b data-i="rv8n">Демьян</b><small data-i="rv8s">Саунд-дизайн</small></div><span class="stars">★★★★★</span></div>
+        <p data-i="rv8a">Занятия максимально крутые и эффективные!</p></div>
+      <div class="rev" style="--c:var(--purple)"><div class="who2"><span class="av">А</span><div><b data-i="rv9n">Александра</b><small data-i="rv9s">Композиция</small></div><span class="stars">★★★★★</span></div>
+        <p data-i="rv9a">Шикарный специалист! Однозначно рекомендую!</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="about">
+  <div class="wrap about">
+    <div class="pic"><img src="img/about.jpg" alt="Михаил Корсун с мандолиной" data-alt="alt3" loading="lazy"></div>
+    <div>
+      <span class="eb" style="--c:var(--purple)" data-i="a_eb">Обо мне</span>
+      <h2 data-ih="a_h">Михаил <em>Корсун</em></h2>
+      <p style="margin-top:20px" data-i="a1">Композитор, мандолинист и педагог, 26 лет в музыке. Окончил Национальную музыкальную академию им. Чайковского в Киеве, был солистом оркестров, лауреат международных конкурсов.</p>
+      <p data-i="a2">Пишу музыку для кино, игр и трейлеров: мои альбомы выходят на Amadea Music Productions. В 2026 году выпустил альбом Silent Soul, записанный целиком на мандолине.</p>
+      <p data-i="a3">В школе нет шаблонных программ. На каждом занятии мы работаем с вашим материалом, вашей задачей и вашим уровнем, конкретно и по существу.</p>
+      <div class="stats">
+        <div class="stat" style="--c:var(--orange)"><b>26</b><span data-i="sa">лет в музыке</span></div>
+        <div class="stat" style="--c:var(--blue)"><b>300+</b><span data-i="sb">концертов</span></div>
+        <div class="stat" style="--c:var(--purple)"><b>1000+</b><span data-i="sc">часов музыки</span></div>
+        <div class="stat" style="--c:var(--green)"><b>5,0</b><span data-i="sd">рейтинг учеников</span></div>
+      </div>
+      <div class="gal"><img src="img/orchestra.jpg" alt="Оркестр, сцена" data-alt="alt4" loading="lazy"><img src="img/ensemble.jpg" alt="Ансамбль на концерте" data-alt="alt5" loading="lazy"></div>
+      <p style="margin-top:18px"><a class="lk" style="color:var(--yellow);font-weight:700;text-decoration:none" href="https://korsunmusic.com" target="_blank" rel="noopener" data-i="a_link">Моя музыка и работы: korsunmusic.com →</a></p>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<section id="contact">
+  <div class="wrap contact">
+    <div>
+      <span class="eb" style="--c:var(--yellow)" data-i="c_eb">Записаться</span>
+      <h2 data-ih="c_h">Расскажите о своей <em>задаче</em></h2>
+      <p style="color:var(--mu);margin:18px 0 0;max-width:30em" data-i="c_p">Заполните форму, и я напишу вам в течение нескольких часов. Или напишите напрямую, как вам удобнее.</p>
+      <div class="direct">
+        <a href="https://t.me/mike_korsun" target="_blank" rel="noopener" style="--c:var(--blue)"><i><svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.9 4.3 18.7 19.4c-.2 1.1-.9 1.3-1.8.8l-4.9-3.6-2.4 2.3c-.3.3-.5.5-1 .5l.3-5 9.1-8.2c.4-.4-.1-.6-.6-.2L6.2 13.1l-4.8-1.5c-1-.3-1.1-1 .2-1.5L20.5 3c.9-.3 1.6.2 1.4 1.3z"/></svg></i><span><b>Telegram</b><small>@mike_korsun</small></span></a>
+        <a href="https://www.instagram.com/korsun.music_school" target="_blank" rel="noopener" style="--c:var(--pink)"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></i><span><b>Instagram</b><small data-i="ig">@korsun.music_school · Direct</small></span></a>
+        <a id="mail" href="#contact" style="--c:var(--yellow)"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></i><span><b>Email</b><small data-i="mailt">Написать письмо</small></span></a>
+      </div>
+    </div>
+    <form id="f" novalidate>
+      <label><span data-i="f1">Имя *</span><input name="name" required autocomplete="name"></label>
+      <label><span data-i="f2">Email, Telegram или WhatsApp *</span><input name="contact" required></label>
+      <label><span data-i="f3">Направление</span>
+        <select name="subject">
+          <option value="Мандолина" data-i="o1">Мандолина</option>
+          <option value="Logic Pro" data-i="o2">Саунд-продакшн в Logic Pro</option>
+          <option value="Сведение и мастеринг" data-i="o3">Сведение и мастеринг</option>
+          <option value="Композиция" data-i="o4">Композиция и мелодика</option>
+          <option value="Оркестровка" data-i="o5">Оркестровка и аранжировка</option>
+          <option value="Гармония" data-i="o6">Гармония</option>
+          <option value="Теория музыки" data-i="o7">Теория музыки и сольфеджио</option>
+          <option value="Подготовка к поступлению" data-i="o8">Подготовка к поступлению</option>
+          <option value="Менеджмент музыканта" data-i="o9">Менеджмент музыканта</option>
+          <option value="Не знаю, помогите выбрать" data-i="o10">Не знаю, помогите выбрать</option>
+        </select></label>
+      <label><span data-i="f4">Над чем работаете, с чего хотите начать</span><textarea name="message"></textarea></label>
+      <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <input type="hidden" name="plan">
+      <button class="btn fill" type="submit" style="justify-content:center" data-i="f_btn">Отправить заявку</button>
+      <div class="ok" id="ok" role="status" data-i="f_ok">Спасибо! Заявка отправлена, я напишу вам в ближайшее время.</div>
+      <p style="margin:0;color:var(--mu-2);font-size:13px" data-i="f_priv">Данные нужны только для того, чтобы связаться с вами.</p>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><img src="img/logo.png" alt="KORSUN"><span>Music School</span></a>
+    <q data-i="quote">Музыка — это осознанная система</q>
+    <nav><a href="#subjects" data-i="n1">Направления</a><a href="#prices" data-i="n2">Цены</a><a href="#reviews" data-i="n3">Отзывы</a><a href="https://korsunmusic.com" target="_blank" rel="noopener">korsunmusic.com</a><a href="https://t.me/korsun_music_school" target="_blank" rel="noopener" data-i="tgc">Telegram-канал</a></nav>
+    <div>© 2026 KORSUN Music School · <span data-i="ft">Онлайн · индивидуально</span></div>
+  </div>
+</footer>
+
+<script>
+/* Form endpoint: Google Apps Script web app (writes to a Google Sheet and emails the school inbox).
+   Left empty, the form falls back to opening an email to the school address. */
+const FORM_ENDPOINT='';
+const MAIL_USER='hello', MAIL_DOMAIN=['korsunmusicschool','com'].join('.');
+
+const PRICES={
+  usd:{single:'$35',p4:'$118',p4o:'$140',p4per:'$29.5',p8:'$212',p8o:'$280',p8per:'$26.5',mentor:'$295'},
+  eur:{single:'€32',p4:'€108',p4o:'€128',p4per:'€27',p8:'€194',p8o:'€256',p8per:'€24',mentor:'€270'},
+  uah:{single:'1 250 ₴',p4:'4 200 ₴',p4o:'5 000 ₴',p4per:'1 050 ₴',p8:'7 500 ₴',p8o:'10 000 ₴',p8per:'938 ₴',mentor:'10 500 ₴'},
+  rub:{single:'3 000 ₽',p4:'10 000 ₽',p4o:'12 000 ₽',p4per:'2 500 ₽',p8:'18 000 ₽',p8o:'24 000 ₽',p8per:'2 250 ₽',mentor:'25 000 ₽'}
+};
+const PER={ru:' за занятие',en:' per lesson'};
+
+const EN={
+ n1:"Subjects",n2:"Prices",n3:"Reviews",n4:"About",n5:"Book a lesson",
+ h1:"Music that <em>sounds</em> professional",
+ lede:"One-to-one online lessons: mandolin, music production in Logic Pro, mixing and mastering, composition, orchestration and harmony. We work with your own material from the very first lesson.",
+ cta1:"Book a free consultation",cta2:"Subjects",
+ note:"A free 20–30 minute consultation: we look at where you are and draw up a personal plan.",
+ alt1:"Mike Korsun working in his studio",alt2:"Mike Korsun playing the mandolin",alt3:"Mike Korsun with a mandolin",alt4:"Orchestra on stage",alt5:"Ensemble in concert",
+ w_eb:"Who it's for",w_h:"These lessons are for you if",
+ w1h:"You play the mandolin or want to",w1:"From scratch or coming from domra, violin or guitar. Technique, tremolo, repertoire from baroque to contemporary music.",
+ w2h:"You make music in a DAW",w2:"You work in Logic Pro or another DAW and hear that something is off, but can't tell why.",
+ w3h:"You want to write for film and media",w3:"Film, games, ads and trailers: orchestration, drama and the industry's quality standards.",
+ s_eb:"Subjects",s_h:"What I <em>teach</em>",s_p:"Take any subject on its own or combine several into a personal programme. Tap a track to open the details.",
+ go:"Book a lesson on this →",
+ t1:"Mandolin",t1s:"For beginners and players coming from domra, violin or guitar",t1q:"The mandolin is my voice. Let me show you what it can do",
+ t1p1:"I have played the mandolin and the domra for more than twenty years: I studied folk instruments, played as a soloist with orchestras and released an album recorded entirely on mandolin. The mandolin belongs in concert music, contemporary genres, film and advertising, and I'd love to help you make it sing.",
+ t1p2:"In lessons:",t1a:"Posture, right hand and pick technique",t1b:"Tremolo, technique and clean intonation",t1c:"Switching from domra, violin or guitar",t1d:"Repertoire: baroque, classical, Vivaldi concertos",t1e:"Preparing for competitions and auditions",t1f:"Ensemble playing and recording your parts",
+ t2:"Music production in Logic Pro",t2s:"Or any other DAW: from an idea to a finished track",t2q:"From a first idea to a track you're proud to send",
+ t2p1:"Logic Pro is my main tool: it's where I write trailer music, soundtracks and albums. I'll teach you to work in it quickly and with intent, and if you use another DAW, we'll apply the same thinking there.",
+ t2p2:"In lessons:",t2a:"Interface, templates and shortcuts",t2b:"MIDI, virtual instruments and libraries",t2c:"Arrangement and song structure",t2d:"Recording live instruments and vocals",t2e:"Sound design and working with samples",t2f:"Your own presets and templates",
+ t3:"Mixing and mastering",t3s:"Why your track sounds muddy and how to fix it",t3q:"Why a track sounds muddy, and why it isn't about talent",
+ t3p1:"Most mix problems aren't a matter of taste, they're physics. A loud sound in one frequency range hides quieter sounds in the same range. That's masking, and it's why tracks sound muddy and flat.",
+ t3p2:"In lessons:",t3a:"The physics behind every decision",t3b:"EQ as a cleaning tool, not decoration",t3c:"What compression really does",t3d:"Psychoacoustics: quiet vs loud mixes",t3e:"Space and depth",t3f:"Mixing orchestral music and mastering",
+ t4:"Composition and melody",t4s:"Themes people remember",t4q:"Why some melodies stay forever and others are forgotten at once",
+ t4p1:"Many people think melody is inspiration. In fact it's a system. The brain remembers not beauty but a departure from expectation: one unexpected note in the right place makes a theme unforgettable.",
+ t4p2:"In lessons:",t4a:"How a melodic contour is built",t4b:"Where the climax goes and why",t4c:"How one note changes a theme",t4d:"Themes for film and media",t4e:"How listeners remember music",t4f:"Feedback on your own material",
+ t5:"Orchestration and arrangement",t5s:"A living orchestra in your DAW, film and trailers",t5q:"Why some orchestral tracks feel alive and others sound flat",
+ t5p1:"Orchestration isn't choosing instruments. It's deciding who speaks and who stays silent in every bar. Timbre carries meaning: low strings are inevitability, the oboe is loneliness, brass is a force nothing can stop.",
+ t5p2:"In lessons:",t5a:"The roles of the four orchestral sections",t5b:"Tension without volume",t5c:"Why orchestras sound flat and how to fix it",t5d:"Live instruments with electronics",t5e:"Strings, brass and woodwinds in Logic",t5f:"Trailer music and industry standards",
+ t6:"Harmony",t6s:"Stop guessing chords",t6q:"Why some chords work, and how to stop guessing",
+ t6p1:"Harmony isn't a set of rules but a description of how we hear movement. T → S → D → T: home, departure, tension and return. Every time a phrase ends with that feeling of 'now we're home', the dominant is at work.",
+ t6p2:"In lessons:",t6a:"The functional logic of chords",t6b:"Why some progressions work and others don't",t6c:"Modal interchange and borrowing",t6d:"Tonicisation and modulation",t6e:"How harmony creates emotion",t6f:"Harmonising your melodies",
+ t7:"Music theory and ear training",t7s:"Theory you can use right away",t7q:"Theory you can use today, not in a year",
+ t7p1:"Music theory isn't a dull exam subject, it's a map of what happens when you work with sound. Move a note in the piano roll and you work with one of sound's four properties. Change an EQ and you change timbre through the physics of overtones.",
+ t7p2:"In lessons:",t7a:"Theory through the piano roll and DAW",t7b:"Intervals and their physical nature",t7c:"Mode and key as a system of pulls",t7d:"Rhythm, metre and tempo",t7e:"Ear training and solfège",t7f:"Psychoacoustics: how the brain hears",
+ t8:"Exam and audition preparation",t8s:"Music colleges, conservatories, sound engineering",t8q:"Calm, step-by-step preparation for your exam",
+ t8p1:"I prepare students for performance, composition and sound engineering programmes: from the instrumental programme to critical listening and the creative project.",
+ t8p2:"In lessons:",t8a:"Audition programme and repertoire",t8b:"Theory, harmony and ear training for exams",t8c:"Critical listening to recordings",t8d:"Mixing and the creative project",t8e:"Intensive pre-exam preparation",t8f:"Competitions and auditions",
+ t9:"Career for musicians",t9s:"Turning music into a profession",t9q:"How to build a career, not just play music",
+ t9p1:"Many musicians can write music but don't know how to turn it into a profession. The difference between 'I do music' and 'I have a music career' isn't talent, it's a system.",
+ t9p2:"In lessons:",t9a:"Positioning yourself as a professional",t9b:"Finding students and clients through content",t9c:"Income from several sources",t9d:"Working with music libraries and labels",t9e:"An archive of material that works for you",t9f:"Keeping your pace without burning out",
+ h_eb:"Getting started",h_h:"Your first meeting",st1k:"STEP 1",st1h:"You write to me",st1:"A few words about you and your goal. I reply the same day.",
+ st2k:"STEP 2",st2h:"Free consultation",st2:"20–30 minutes: we look at where you are, listen to your music or playing and decide where to go next.",
+ st3k:"STEP 3",st3h:"Your personal plan",st3:"If you'd like to continue, I suggest a format and programme for your goal. No pressure.",
+ p_eb:"Formats and prices",p_h:"Online, one-to-one, built around your material",p_note:"Each lesson is 60 minutes. I teach students from anywhere in the world.",
+ pl1k:"Start",pl1h:"Single lesson",pl1s:"60 minutes",pl1per:"Try the format or solve one task",pl1a:"A look at your task",pl1b:"Work on your own material",pl1c:"A clear plan after the lesson",pl1d:"Lesson recording",pl_btn1:"Book",
+ pop:"POPULAR",pl2k:"Advanced",pl2h:"4-lesson package",pl2s:"1–2 times a week",pl2a:"Everything in Start",pl2b:"Homework with feedback",pl2c:"Access to the school's knowledge base",pl2d:"Feedback between lessons",pl_btn2:"Choose package",
+ pl3k:"Elite",pl3h:"8-lesson package",pl3s:"Twice a week for a month",pl3a:"Everything in Advanced",pl3b:"Support on your project",pl3c:"Messenger support",pl3d:"Priority scheduling",pl3e:"A music theory book as a gift",pl_btn3:"Choose package",
+ pl4k:"Mentorship",pl4h:"Full mentorship",pl4s:"One month",pl4per:"per month",pl4a:"Up to 10 lessons a month",pl4b:"Work on your project or programme",pl4c:"Daily feedback",pl4d:"All school materials",pl4e:"A music theory book as a gift",pl_btn4:"Discuss",
+ pay:"Payment:",pay2:"UA card",pay3:"RU card",pay4:"Other — just ask",
+ r_eb:"Reviews",r_h:"What students say",r_p:"Reviews from the platform where I teach. Rating 5.0.",
+ rv1n:"Elina",rv1s:"Production in Logic Pro",rv1a:"Mikhail is a true professional. I study arrangement in Logic Pro with no experience or music education. He explains everything calmly, with real interest, motivation and support. It feels like your result matters to him as much as it does to you.",rv1b:"Lessons adapt completely to you. Huge thanks, he's a great motivator for me on this not-so-easy path.",
+ rv2n:"Valery",rv2s:"Admission preparation",rv2a:"My son is applying to study sound engineering and needed intensive pre-exam preparation in critical listening, mixing and advice on his creative project. We really liked Mikhail's work, his recommendations and his ability to explain the material professionally. Thank you!",
+ rv3n:"Tatiana",rv3s:"Logic Pro",rv3a:"I needed to learn Logic Pro to process my meditation recordings myself. In just two sessions Mikhail showed me the tools I needed and set up presets I now use on my own. He sent recordings after each session, which are easy to come back to.",
+ rv4n:"Irina",rv4s:"Sound design",rv4a:"We had a couple of sound design consultations and were very happy. In two sessions we got a clear picture of where to start and where to go next. Always on time, no rescheduling. Recommended!",
+ rv5n:"Milana",rv5s:"Arrangement",rv5a:"Mikhail is an excellent professional and a sensitive musician. I had a difficult task and I'm grateful for the work. As a composer, I think I've found my arranger.",
+ rv6n:"Dmitry",rv6s:"Mixing",rv6a:"I really enjoyed going through projects and getting answers to my questions. Ready to keep studying.",
+ rv7n:"Alexander",rv7s:"Logic Pro and mixing",rv7a:"Studying, everything is great! We've done 5–7 lessons and keep going. Recommended if you want to level up your mixing. A real professional!",
+ rv8n:"Demyan",rv8s:"Sound design",rv8a:"Super cool and effective lessons!",rv9n:"Alexandra",rv9s:"Composition",rv9a:"An amazing teacher! Highly recommended!",
+ a_eb:"About",a_h:"Mike <em>Korsun</em>",
+ a1:"Composer, mandolinist and teacher with 26 years in music. A graduate of the Tchaikovsky National Music Academy in Kyiv, a former orchestra soloist and a laureate of international competitions.",
+ a2:"I write music for film, games and trailers; my albums are released by Amadea Music Productions. In 2026 I released Silent Soul, an album recorded entirely on mandolin.",
+ a3:"There are no template programmes here. Every lesson is about your material, your goal and your level, focused and practical.",
+ sa:"years in music",sb:"concerts",sc:"hours of music",sd:"student rating",a_link:"My music and work: korsunmusic.com →",
+ c_eb:"Book a lesson",c_h:"Tell me about your <em>goal</em>",c_p:"Fill in the form and I'll get back to you within a few hours. Or message me directly, whichever suits you.",
+ ig:"@korsun.music_school · Direct",mailt:"Send an email",
+ f1:"Name *",f2:"Email, Telegram or WhatsApp *",f3:"Subject",f4:"What are you working on, where would you like to start",
+ o1:"Mandolin",o2:"Music production in Logic Pro",o3:"Mixing and mastering",o4:"Composition and melody",o5:"Orchestration and arrangement",o6:"Harmony",o7:"Music theory and ear training",o8:"Exam preparation",o9:"Career for musicians",o10:"Not sure, help me choose",
+ f_btn:"Send",f_ok:"Thank you! Your request has been sent, I'll get back to you soon.",f_priv:"Your details are used only to contact you.",
+ quote:"Music is a conscious system",tgc:"Telegram channel",ft:"Online · one-to-one"
+};
+const HTMLKEYS=new Set(['h1','s_h','a_h','c_h']);
+const RU={};
+document.querySelectorAll('[data-i],[data-ih]').forEach(el=>{const k=el.dataset.i||el.dataset.ih;if(!(k in RU))RU[k]=el.dataset.ih?el.innerHTML:el.textContent});
+document.querySelectorAll('[data-alt]').forEach(el=>{RU[el.dataset.alt]=el.alt});
+let LANG='ru', CUR='usd';
+function renderPrices(){
+  const P=PRICES[CUR];
+  document.querySelectorAll('[data-p]').forEach(el=>{const k=el.dataset.p;el.textContent=k.endsWith('per')?(P[k]+PER[LANG]):P[k]});
+  document.querySelectorAll('#cur button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.c===CUR));
+}
+function setLang(l){
+  LANG=l;const D=l==='en'?EN:RU;
+  document.querySelectorAll('[data-i]').forEach(el=>{const v=D[el.dataset.i];if(v!=null)el.textContent=v});
+  document.querySelectorAll('[data-ih]').forEach(el=>{const v=D[el.dataset.ih];if(v!=null)el.innerHTML=v});
+  document.querySelectorAll('[data-alt]').forEach(el=>{const v=D[el.dataset.alt];if(v)el.alt=v});
+  document.documentElement.lang=l;
+  document.title=l==='en'?'KORSUN Music School — one-to-one online music lessons':'KORSUN Music School — индивидуальные уроки музыки онлайн';
+  document.getElementById('l-ru').setAttribute('aria-pressed',l==='ru');
+  document.getElementById('l-en').setAttribute('aria-pressed',l==='en');
+  document.querySelectorAll('.rev').forEach(r=>{r.querySelector('.av').textContent=r.querySelector('.who2 b').textContent.trim().charAt(0)});
+  renderPrices();
+  try{localStorage.setItem('lang',l)}catch(e){}
+}
+document.getElementById('l-ru').onclick=()=>{setLang('ru');history.replaceState(null,'',location.pathname+'#ru')};
+document.getElementById('l-en').onclick=()=>{setLang('en');history.replaceState(null,'',location.pathname+'#en')};
+document.querySelectorAll('#cur button').forEach(b=>b.onclick=()=>{CUR=b.dataset.c;renderPrices();try{localStorage.setItem('cur',CUR)}catch(e){}});
+let start=null;
+if(location.hash==='#en')start='en';else if(location.hash==='#ru')start='ru';
+if(!start){try{start=localStorage.getItem('lang')}catch(e){}}
+if(!start){const nl=(navigator.languages||[navigator.language||'']).join(',').toLowerCase();start=/(^|,)(ru|uk|be|kk)/.test(nl)?'ru':'en'}
+try{const c=localStorage.getItem('cur');if(c&&PRICES[c])CUR=c}catch(e){}
+setLang(start);
+
+/* tracks accordion */
+document.querySelectorAll('.trk>button').forEach(b=>b.addEventListener('click',()=>{const t=b.parentElement;const o=!t.classList.contains('open');t.classList.toggle('open',o);b.setAttribute('aria-expanded',o)}));
+
+/* LCD bar counter */
+(function(){const el=document.getElementById('bar');if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;let n=0;setInterval(()=>{n++;const bar=Math.floor(n/4)%16+1,beat=n%4+1;el.textContent=String(bar).padStart(3,'0')+' . '+beat},500)})();
+
+/* prefill subject / plan from links */
+const F=document.getElementById('f');
+document.querySelectorAll('[data-c]').forEach(a=>{if(a.closest('#cur'))return;a.addEventListener('click',()=>{const s=F.subject;[...s.options].forEach(o=>{if(o.value===a.dataset.c)s.value=o.value})})});
+document.querySelectorAll('[data-plan]').forEach(a=>a.addEventListener('click',()=>{F.plan.value=a.dataset.plan+' ('+CUR.toUpperCase()+')';const m=F.message;if(!m.value)m.value=(LANG==='en'?'Interested in: ':'Интересует: ')+a.textContent.trim()+' — '+a.closest('.plan').querySelector('h3').textContent}));
+
+/* email link (address assembled on interaction) */
+(function(){const m=document.getElementById('mail');const go=()=>{m.href='mail'+'to:'+MAIL_USER+'@'+MAIL_DOMAIN+'?subject='+encodeURIComponent('KORSUN Music School')};['mouseenter','focus','touchstart','click'].forEach(e=>m.addEventListener(e,go,{passive:true}))})();
+
+/* form submit */
+F.addEventListener('submit',async e=>{
+  e.preventDefault();
+  if(F.website.value)return;
+  if(!F.name.value.trim()||!F.contact.value.trim()){(F.name.value.trim()?F.contact:F.name).focus();return}
+  const data={name:F.name.value.trim(),contact:F.contact.value.trim(),subject:F.subject.value,plan:F.plan.value,message:F.message.value.trim(),lang:LANG,page:location.href};
+  const btn=F.querySelector('button[type=submit]');btn.disabled=true;
+  if(FORM_ENDPOINT){
+    try{await fetch(FORM_ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'text/plain;charset=utf-8'},body:JSON.stringify(data)});
+      document.getElementById('ok').style.display='block';F.reset();}catch(err){mailFallback(data)}
+  }else mailFallback(data);
+  btn.disabled=false;
+});
+function mailFallback(d){
+  const body=`${d.name}\n${d.contact}\n${d.subject}${d.plan?' · '+d.plan:''}\n\n${d.message}`;
+  location.href='mail'+'to:'+MAIL_USER+'@'+MAIL_DOMAIN+'?subject='+encodeURIComponent('Заявка: '+d.subject)+'&body='+encodeURIComponent(body);
+}
+</script>
+</body>
+</html>
