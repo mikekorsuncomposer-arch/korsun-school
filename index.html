@@ -19,8 +19,8 @@
 :root{
   --bg:#0b0b0d; --win:#121215; --panel:#16161a; --panel-2:#1d1d22; --line:rgba(255,255,255,.07); --line-2:rgba(255,255,255,.13);
   --fg:#f3f1ec; --text:#d8d6d1; --mu:#9d9b96; --mu-2:#6d6c69;
-  --gold:#d1b47c; --gold-2:#b8975a;
-  --t1:#86a3c9; --t2:#b39acb; --t3:#c9b27a; --t4:#8fb39b; --t5:#8bb6b9; --t6:#c49a7a; --t7:#c98f9e; --t8:#b98480; --t9:#8f8e96;
+  --gold:#dcbd82; --gold-2:#c29f5f;
+  --t1:#8fb1e0; --t2:#c2a4e2; --t3:#dbbd76; --t4:#94c7a3; --t5:#8ecacd; --t6:#d9a27a; --t7:#de93a7; --t8:#cf8b84; --t9:#9c9ba6;
   --ink:#141210;
   --f:-apple-system,BlinkMacSystemFont,"SF Pro Display","Inter",system-ui,"Segoe UI",sans-serif;
   --serif:"Cormorant Garamond","Iowan Old Style","Palatino Linotype",Georgia,serif;
@@ -87,7 +87,14 @@ h1 em,h2 em{font-family:var(--serif);font-style:normal;font-weight:500;letter-sp
 .win .bar{display:flex;align-items:center;gap:7px;padding:10px 12px;border-bottom:1px solid var(--line);font:500 11.5px var(--mono);color:var(--mu-2)}
 .win .bar i{width:10px;height:10px;border-radius:50%;background:#ff5f57}.win .bar i+i{background:#febc2e}.win .bar i+i+i{background:#28c840}
 .win .bar span{margin-left:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.win img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 20%}
+.win .shot{position:relative}
+.win img{width:100%;aspect-ratio:4/5;object-fit:cover;object-position:50% 30%;filter:saturate(1.05)}
+.win .cred{display:flex;flex-wrap:wrap;gap:6px 18px;padding:12px 14px;border-top:1px solid var(--line);background:linear-gradient(180deg,#141418,#101013)}
+.win .cred span{display:flex;align-items:baseline;gap:7px;font-size:12.5px;color:var(--text);white-space:nowrap}
+.win .cred em{font-style:normal}
+.win .cred b{font:600 15px var(--mono);color:var(--gold);letter-spacing:-.02em}
+.win .cred span.edu{white-space:normal}
+.win .cred span.edu::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold);align-self:center}
 .win .meter{position:absolute;right:12px;bottom:12px;display:flex;gap:3px;align-items:flex-end;height:46px;padding:8px;background:rgba(8,9,11,.7);border-radius:9px;backdrop-filter:blur(6px)}
 .win .meter i{width:5px;border-radius:2px;background:linear-gradient(0deg,#8fb39b 0%,#8fb39b 62%,#c9b27a 82%,#c98f9e 100%);animation:lv 1.1s ease-in-out infinite alternate}
 .win .meter i:nth-child(2){animation-delay:.2s}.win .meter i:nth-child(3){animation-delay:.45s}.win .meter i:nth-child(4){animation-delay:.1s}
@@ -312,8 +319,15 @@ footer .legal a{color:var(--mu-2);font-size:13px}
     </div>
     <figure class="win" style="margin:0">
       <div class="bar"><i></i><i></i><i></i><span>KORSUN — Lesson 01.logicx</span></div>
-      <img src="img/hero.jpg" alt="Михаил Корсун с мандолиной на берегу моря" data-alt="alt1" width="980" height="1225">
-      <div class="meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="shot">
+        <img src="img/hero.jpg" alt="Михаил Корсун на берегу моря" data-alt="alt1" width="864" height="1080" fetchpriority="high">
+        <div class="meter" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="cred">
+        <span><b>26</b><em data-i="cr1">лет в музыке</em></span>
+        <span><b>300+</b><em data-i="cr2">концертов</em></span>
+        <span class="edu" data-i="cr3">Высшее музыкальное образование</span>
+      </div>
     </figure>
     <div class="arr" aria-hidden="true">
       <div class="tb"><span>● ● ●</span><b>Tracks</b><span>KORSUN Music School — Arrangement</span></div>
@@ -549,7 +563,7 @@ footer .legal a{color:var(--mu-2);font-size:13px}
       <div class="gal">
         <figure class="w2"><img src="img/orchestra.jpg" alt="В оркестре народных инструментов" data-alt="alt4" loading="lazy"></figure>
         <figure><img src="img/portrait.jpg" alt="Портрет с мандолиной" data-alt="alt6" loading="lazy"></figure>
-        <figure><img src="img/hero.jpg" alt="С мандолиной на пляже" data-alt="alt7" loading="lazy" style="object-position:50% 30%"></figure>
+        <figure><img src="img/beach.jpg" alt="На берегу моря" data-alt="alt7" loading="lazy" style="object-position:50% 45%"></figure>
         <figure class="w2"><img src="img/ensemble.jpg" alt="Ансамбль на концерте" data-alt="alt5" loading="lazy"></figure>
         <figure class="w2"><img src="img/mandolin.jpg" alt="Игра на мандолине вечером" data-alt="alt8" loading="lazy"></figure>
       </div>
